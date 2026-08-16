@@ -1,0 +1,70 @@
+project:
+  data_dir: data
+  results_dir: results
+  device: auto
+
+dataset:
+  name: mnist
+  num_clients: 20
+  train_subset: null
+  test_subset: null
+
+model:
+  conv1_channels: 16
+  conv2_channels: 32
+  kernel_size: 3
+  num_classes: 10
+
+training:
+  rounds: 20
+  client_fraction: 0.5
+  batch_size: 64
+  test_batch_size: 512
+  learning_rate: 0.05
+  momentum: 0.0
+  default_local_steps: 5
+  min_local_steps: 2
+  max_local_steps: 10
+
+systems:
+  low:
+    speed_lognormal_mean: 0.0
+    speed_lognormal_sigma: 0.10
+    dropout_probability: 0.05
+    network_delay_mean: 0.10
+    network_delay_sigma: 0.02
+  high:
+    speed_lognormal_mean: 0.0
+    speed_lognormal_sigma: 1.00
+    dropout_probability: 0.30
+    network_delay_mean: 1.00
+    network_delay_sigma: 0.60
+
+strategies:
+  fedavg_sync:
+    timeout: 8.0
+  async_vc:
+    round_budget: 4.0
+    hard_cutoff: 20.0
+  upmf:
+    round_budget: 4.0
+    scheduler:
+      ewma_decay: 0.7
+      availability_weight: 0.65
+      speed_weight: 0.35
+      exploration_floor: 0.10
+      starvation_rounds: 5
+    aggregator:
+      expected_round_time: 4.0
+      staleness_rate: 0.35
+      divergence_rate: 1.0
+      hard_staleness_cutoff: 4.0
+    compressor:
+      topk_fraction: 0.10
+
+metrics:
+  evaluation_interval: 2
+  target_accuracy: 0.90
+
+checkpoint:
+  every_rounds: 1

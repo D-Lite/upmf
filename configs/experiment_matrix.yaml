@@ -1,0 +1,14 @@
+base_config: configs/base.yaml
+strategies:
+  - upmf
+  - fedavg_sync
+  - async_vc
+systems_severities:
+  - low
+  - high
+statistical_severities:
+  low: 100.0
+  high: 0.2
+seeds:
+  - 1
+  - 2
